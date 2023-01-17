@@ -15,9 +15,9 @@ public class StubMenu : MonoBehaviour
        // });
     }
 
-    public void OnClickEatingButton()
+    public void OnClickStartButton()
     {
-        SceneManager.LoadScene("Scenes/EatingScene");
+        SceneManager.LoadScene("Scenes/QuizScene");
     }
 
     public void OnClickTrainingButton()
