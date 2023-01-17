@@ -1,27 +1,24 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using Firebase;
+using UnityEngine.UI;
 
 public class StubMenu : MonoBehaviour
 {
-    public static int a;
-    void start()
-    {
-       // FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
-       //     FirebaseAnalytics.SetAnalyticsCollectionEnabled(true);
-       // });
+    public GameObject rules;
+    public Text record;
+
+    public void Start() {
+        if (PlayerPrefs.HasKey("SavedInt")) {
+            int recordValue = PlayerPrefs.GetInt("SavedInt");
+            record.text = (recordValue.ToString() + " Points");
+        }
     }
 
-    public void OnClickStartButton()
-    {
+    public void OnClickStartButton() {
         SceneManager.LoadScene("Scenes/QuizScene");
     }
 
-    public void OnClickTrainingButton()
-    {
-        SceneManager.LoadScene("Scenes/TrainingScene");
+    public void OnClickRulesButton() {
+        rules.SetActive(!rules.activeSelf);
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -10,6 +9,7 @@ public class Quiz : MonoBehaviour
     public InputField answer;
     public GameObject questionObject;
     public GameObject answerObject;
+    public GameObject startPanel;
     public GameObject endPanel;
     public Text timer;
     public Text question;
@@ -17,15 +17,22 @@ public class Quiz : MonoBehaviour
     public Text endText;
     public Text endPoints;
     public Text endRecord;
+    public Text startTimer;
     public TextAsset questionsFile;
     public TextAsset answersFile;
+    public AudioSource audioSource;
+    public AudioClip startTimerSound;
+    public AudioClip winSound;
+    public AudioClip gameOverSound;
+    public AudioClip rightAnswerSound;
     public string[] oneQuestion;
     public string[] oneAnswer;
-    public bool[] repititionCheck = new bool[10];
+    public bool[] repititionCheck;
     public string correctAnswer;
     public int points;
     public int numOfQuestion;
     public int newRnd;
+    public bool firstLaunch = true;
     System.Random rnd = new System.Random();
 
     public void Start() {
@@ -35,15 +42,27 @@ public class Quiz : MonoBehaviour
     }
 
     IEnumerator NewTimer() {
-        newRnd = rnd.Next(0,4);
+        if (firstLaunch) {
+            audioSource.clip = startTimerSound;
+            audioSource.PlayDelayed(0.5f);
+            for (int i = 3; i >= 1; i--) {
+                startTimer.text = i.ToString();
+                yield return new WaitForSeconds(1);
+            }
+        }
+        firstLaunch = false;
+        startPanel.SetActive(false);
+        answerObject.SetActive(true);
+        questionObject.SetActive(true);
+
+        newRnd = rnd.Next(0,100);
         while (repititionCheck[newRnd])
-            newRnd = rnd.Next(0,4);
+            newRnd = rnd.Next(0,100);
         repititionCheck[newRnd] = true;
         numOfQuestion++;
 
         question.text = oneQuestion[newRnd];
         correctAnswer = oneAnswer[newRnd].Remove(oneAnswer[newRnd].Length-1, 1);
-        answer.text = string.Empty;
         for (int i = 10; i >= 0; i--) {
             timer.text = i.ToString();
             yield return new WaitForSeconds(1);
@@ -51,34 +70,44 @@ public class Quiz : MonoBehaviour
         End(false);
     }
 
-    public void OnChangeWordValue() {
-        if (answer.text.Equals(correctAnswer, StringComparison.OrdinalIgnoreCase)) {
-            points += correctAnswer.Length;
-            pointsText.text = ("Points:" + points);
-            StopCoroutine("NewTimer");
-            if (numOfQuestion < 4)
-                StartCoroutine("NewTimer");
-            else End(true);
-        }
-    }
-
     public void End(bool win) {
         answerObject.SetActive(false);
         questionObject.SetActive(false);
         if (win) {
+            audioSource.clip = winSound;
             endText.text = ("You win!\nYou answered all the questions");
             endText.color = new Color(255, 230, 0);
+        } else {
+            audioSource.clip = gameOverSound;
+            endText.text = ("Game Over");
         }
-        else endText.text = ("Game Over");
+        audioSource.Play();
         endPoints.text = ("Points:" + points);
         int record;
         if (PlayerPrefs.HasKey("SavedInt"))
             record = PlayerPrefs.GetInt("SavedInt");
         else record = 0;
-        if (points > record)
+
+        if (points > record) {
             endRecord.text = ("New record:" + points);
-        else endRecord.text = ("Record:" + record);
+            PlayerPrefs.SetInt("SavedInt", points);
+            PlayerPrefs.Save();
+        } else endRecord.text = ("Record:" + record);
         endPanel.SetActive(true);
+    }
+
+    public void OnChangeWordValue() {
+        if (answer.text.Equals(correctAnswer, StringComparison.OrdinalIgnoreCase)) {
+            points += correctAnswer.Length;
+            pointsText.text = ("Points:" + points);
+            audioSource.clip = rightAnswerSound;
+            audioSource.Play();
+            answer.text = string.Empty;
+            StopCoroutine("NewTimer");
+            if (numOfQuestion < 100)
+                StartCoroutine("NewTimer");
+            else End(true);
+        }
     }
 
     public void OnClickMenuButton() {
