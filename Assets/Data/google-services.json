@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "424920900681",
-    "project_id": "fedvwi",
-    "storage_bucket": "fedvwi.appspot.com"
+    "project_number": "151778688809",
+    "project_id": "fedsi-7ef59",
+    "storage_bucket": "fedsi-7ef59.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:424920900681:android:f2c66bfd728fdda84b8b98",
+        "mobilesdk_app_id": "1:151778688809:android:99f7c746cc256bb6a00138",
         "android_client_info": {
-          "package_name": "winline.estoper"
+          "package_name": "sisal.matchpoint.kolem"
         }
       },
       "oauth_client": [
         {
-          "client_id": "424920900681-0538cdrf53p7conh8ssha73p5o47r8nd.apps.googleusercontent.com",
+          "client_id": "151778688809-m8n0vvocbla9tqnj8pklc0jgokkn82cq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCgDP_98jdebNECI-YWU5vTR9P6Zbl6NtE"
+          "current_key": "AIzaSyCaFi2nigT4M2_Kl3kxagzNiqucatKkR-o"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "424920900681-0538cdrf53p7conh8ssha73p5o47r8nd.apps.googleusercontent.com",
+              "client_id": "151778688809-m8n0vvocbla9tqnj8pklc0jgokkn82cq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
